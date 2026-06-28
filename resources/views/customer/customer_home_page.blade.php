@@ -198,11 +198,36 @@
                     </div>
 
 
-                    <button
-                        class="w-full mt-3 bg-yellow-400 text-black py-2 rounded-lg 
-                       hover:bg-yellow-500 font-semibold">
-                        Add to Cart
-                    </button>
+                    <div class="flex items-center justify-between mt-3">
+
+                        <div class="flex items-center border rounded-lg overflow-hidden">
+
+                            <button onclick="decreaseQty(${products.id})"
+                                class="px-3 py-2 bg-gray-200 hover:bg-gray-300">
+                                -
+                            </button>
+
+                            <span id="qty-${products.id}" 
+                                class="px-4 font-semibold">
+                                1
+                            </span>
+
+                            <button onclick="increaseQty(${products.id})"
+                                class="px-3 py-2 bg-gray-200 hover:bg-gray-300">
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <button
+                            onclick="addToCart(${products.id})"
+                            class="bg-yellow-400 text-black px-4 py-2 rounded-lg 
+                            hover:bg-yellow-500 font-semibold">
+                            Cart
+                        </button>
+
+                    </div>
 
 
                 </div>
@@ -222,5 +247,25 @@
     }
 
     showWishlitValue();
+
+    let quantities = {};
+
+    function increaseQty(id){
+        if(!quantities[id]){
+            quantities[id] = 1;
+        }
+        quantities[id]++;
+
+        document.getElementById(`qty-${id}`).innerHTML = quantities[id];
+    }
+
+    function decreaseQty(id){
+        if(!quantities[id]){
+            quantities[id] = 1;
+        }
+        quantities[id]--;
+
+        document.getElementById(`qty-${id}`).innerHTML = quantities[id];
+    }
 
 </script>
