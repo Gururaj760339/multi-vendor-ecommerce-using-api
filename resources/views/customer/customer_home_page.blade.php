@@ -144,7 +144,7 @@
         });
 
         const data = await response.json();
-        console.log(data.data);
+        //console.log(data.data);
         let html = '';
 
         data.data.forEach(products => {
@@ -250,8 +250,8 @@
 
     let quantities = {};
 
-    function increaseQty(id){
-        if(!quantities[id]){
+    function increaseQty(id) {
+        if (!quantities[id]) {
             quantities[id] = 1;
         }
         quantities[id]++;
@@ -259,8 +259,8 @@
         document.getElementById(`qty-${id}`).innerHTML = quantities[id];
     }
 
-    function decreaseQty(id){
-        if(!quantities[id]){
+    function decreaseQty(id) {
+        if (!quantities[id]) {
             quantities[id] = 1;
         }
         quantities[id]--;
@@ -268,4 +268,25 @@
         document.getElementById(`qty-${id}`).innerHTML = quantities[id];
     }
 
+    async function addToCart(id) {
+        let formData = new FormData();
+        formData.append('product_id', id);
+        formData.append('quantity', document.getElementById(`qty-${id}`).innerText);
+
+        const response = await fetch('api/cart/add', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
+
+        const data = await response.json;
+
+        window.location.href = '/';
+
+    }
+
+    showTotalCart();
 </script>

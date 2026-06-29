@@ -74,10 +74,10 @@ Route::get('/cupon/list', [CuponController::class, 'cuponList'])->middleware(['a
 
 Route::post('/cart/add', [CartController::class, 'cartStore'])->middleware(['auth:sanctum', 'can:isCustomer']);
 Route::get('/carts', [CartController::class, 'carts'])->middleware(['auth:sanctum', 'can:isCustomer']);
-Route::post('/cart/update/{id}', [CartController::class, 'cartUpdate'])->middleware(['auth:sanctum', 'can:isCustomer']);
-Route::delete('/cart/delete/{id}', [CartController::class, 'cartDelete'])->middleware(['auth:sanctum', 'can:isCustomer']);
-Route::delete('/cart/full/delete/{id}', [CartController::class, 'cartFullDelete'])->middleware(['auth:sanctum', 'can:isCustomer']);
-Route::get('/cart/coupon/applycart', [CartController::class, 'applyCoupon'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::post('/cart/update', [CartController::class, 'cartUpdate'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::delete('/cart/delete', [CartController::class, 'cartDelete'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::delete('/cart/full/delete', [CartController::class, 'cartFullDelete'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::post('/cart/coupon/applycart', [CartController::class, 'applyCoupon'])->middleware(['auth:sanctum', 'can:isCustomer']);
 Route::get('/cart/coupon/remove', [CartController::class, 'removeCoupon'])->middleware(['auth:sanctum', 'can:isCustomer']);
 
 

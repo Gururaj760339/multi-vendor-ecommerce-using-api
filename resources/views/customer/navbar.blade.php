@@ -10,7 +10,7 @@
                 <a href="#" class="hover:text-blue-600">Home</a>
                 <a href="#" class="hover:text-blue-600">Shop</a>
                 <a href="#" class="hover:text-blue-600">Orders</a>
-                <a href="#" class="hover:text-blue-600">Cart</a>
+                <a href="/carts" class="hover:text-blue-600">Cart</a>
                 <a href="/profile" class="hover:text-blue-600">Profile</a>
             </div>
 
@@ -30,10 +30,10 @@
                     </div>
                 </a>
 
-                <button class="relative">
+                <a href="/carts" class="relative">
                     🛒
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">3</span>
-                </button>
+                    <span id="shopingCart" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">3</span>
+                </a>
 
                 <div id="authArea"></div>
 

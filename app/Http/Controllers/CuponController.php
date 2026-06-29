@@ -121,11 +121,11 @@ class CuponController extends BaseController
         $coupon = Cupon::where('code', $code)->first();
 
         if(!$coupon){
-            return $this->sendErrorResponse(false, 'Ínvalid Coupon!', 400);
+            return null;
         }
 
         if(Carbon::parse($coupon->expiry_date)->lt(now())){
-            return $this->sendErrorResponse(false, 'Expaired Coupon!', 400);
+            return null;
         }
 
         $discount = 0;

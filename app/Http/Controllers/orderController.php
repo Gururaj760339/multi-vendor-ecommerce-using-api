@@ -27,7 +27,7 @@ class orderController extends CartController
         $couponId = null;
 
         if ($code) {
-            $CouponData = $this->applyCoupon($code);
+            $CouponData = $this->applyCoupon($request);
             $coupon = Cupon::where('code', $code)->first();
             $discount = $CouponData['Discount Amount'] ?? 0;
 
