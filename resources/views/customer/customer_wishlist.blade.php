@@ -83,4 +83,6 @@
 
         showWishlistProduct();
     }
+
+    showTotalCart();
 </script>

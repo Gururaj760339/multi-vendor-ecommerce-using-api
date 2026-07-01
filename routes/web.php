@@ -50,6 +50,14 @@ Route::get('/carts', function(){
     return view('customer/customer_cart');
 });
 
+Route::get('/orders', function(){
+    return view('customer/customer_orders');
+});
+
+Route::get('/order', function(){
+    return view('customer/customer_single_order');
+});
+
 Route::get('vendor-dashboard', function () {
     return view('vendor/vendor_dashboard');
 });

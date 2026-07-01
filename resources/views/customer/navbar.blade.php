@@ -9,7 +9,7 @@
             <div class="hidden md:flex space-x-6 text-gray-600 font-medium">
                 <a href="#" class="hover:text-blue-600">Home</a>
                 <a href="#" class="hover:text-blue-600">Shop</a>
-                <a href="#" class="hover:text-blue-600">Orders</a>
+                <a href="/orders" class="hover:text-blue-600">Orders</a>
                 <a href="/carts" class="hover:text-blue-600">Cart</a>
                 <a href="/profile" class="hover:text-blue-600">Profile</a>
             </div>

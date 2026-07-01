@@ -110,6 +110,17 @@
 
         document.getElementById('cartData').innerHTML = html;
 
+        const currentCouponValue = appliedCouponCode ? appliedCouponCode : '';
+
+        if (!data.items || data.items.length === 0) {
+            document.getElementById('productSummery').innerHTML = `
+                <div class="w-full md:w-96 bg-gray-50 rounded-xl p-6 shadow">
+                    <h2 class="text-2xl font-bold mb-5">Cart Summary</h2>
+                    <p class="text-gray-600">Your cart is empty.</p>
+                </div>
+            `;
+            return;
+        }
         document.getElementById('productSummery').innerHTML = `
         <div class="w-full md:w-96 bg-gray-50 rounded-xl p-6 shadow">
                     <h2 class="text-2xl font-bold mb-5">Cart Summary</h2>
@@ -149,7 +160,7 @@
                         <span>$${data.total}</span>
                     </div>
 
-                    <button
+                    <button onclick="createOrder()"
                         class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-semibold">
                         Checkout
                     </button>
@@ -165,9 +176,15 @@
 
     showTotalCart();
 
+    let appliedCouponCode = '';
+
     async function applyCoupon() {
         let formData = new FormData();
-        formData.append('code', document.getElementById('code').value);
+        const couponInput =  document.getElementById('code');
+        if(!couponInput) return;
+
+        const couponCode = couponInput.value;
+        formData.append('code', couponCode);
 
         const response = await fetch('api/cart/coupon/applycart', {
             method: 'POST',
@@ -207,6 +224,8 @@
             return;
         }
 
+        appliedCouponCode = couponCode;
+
         document.getElementById('productSummery').innerHTML = `
         <div class="w-full md:w-96 bg-gray-50 rounded-xl p-6 shadow">
                     <h2 class="text-2xl font-bold mb-5">Cart Summary</h2>
@@ -215,7 +234,7 @@
                     <div class="mb-5">
                         <label class="block font-semibold mb-2">Apply Coupon</label>
                         <div class="flex gap-2">
-                            <input id="code" type="text" placeholder="Enter coupon code"
+                            <input id="code" value="${appliedCouponCode}" type="text" placeholder="Enter coupon code"
                                 class="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-400">
                             <button onclick="applyCoupon()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-lg">
                                 Apply
@@ -246,7 +265,7 @@
                         <span>$${data.Grand_Total}</span>
                     </div>
 
-                    <button
+                    <button onclick="createOrder()"
                         class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-semibold">
                         Checkout
                     </button>
@@ -289,47 +308,68 @@
         }
     }
 
-    async function deleteProduct(cartId){
+    async function deleteProduct(cartId) {
         let id = cartId;
 
         const response = await fetch('api/cart/delete', {
-            method : 'DELETE',
-            headers : {
-                'Authorization' : 'Bearer '+localStorage.getItem('token'),
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body : JSON.stringify({
-                id : id
+            body: JSON.stringify({
+                id: id
             })
         });
 
         const data = await response.json();
 
-        if(data.success){
+        if (data.success) {
             window.location.href = "/carts";
         }
     }
 
-    async function clearAllCart(userId){
+    async function clearAllCart(userId) {
         const id = userId;
-        console.log(id);
+        //console.log(id);
         const response = await fetch('api/cart/full/delete', {
-            method : 'DELETE',
-            headers : {
-                'Authorization' : 'Bearer '+localStorage.getItem('token'),
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
-            }, 
-            body : JSON.stringify({
-                id : id
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: id
             })
         });
 
         const data = await response.json();
 
-        if(data.success){
+        if (data.success) {
             window.location.href = '/carts';
         }
+    }
+
+    async function createOrder() {
+        let couponInput = document.getElementById('code');
+        let couponCode = couponInput ? couponInput.value : appliedCouponCode;
+        console.log(couponCode);
+
+        const response = await fetch('api/order/create', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: couponCode
+            })
+        });
+
+        window.location.href = '/';
+
     }
 </script>

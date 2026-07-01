@@ -131,6 +131,7 @@
 </html>
 
 <script src="{{ asset('storage/js/navbar.js') }}"></script>
+<script src="{{ asset('storage/js/addtocart.js') }}"></script>
 
 <script>
     updateAuthUI();
@@ -266,26 +267,6 @@
         quantities[id]--;
 
         document.getElementById(`qty-${id}`).innerHTML = quantities[id];
-    }
-
-    async function addToCart(id) {
-        let formData = new FormData();
-        formData.append('product_id', id);
-        formData.append('quantity', document.getElementById(`qty-${id}`).innerText);
-
-        const response = await fetch('api/cart/add', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Accept': 'application/json'
-            },
-            body: formData
-        });
-
-        const data = await response.json;
-
-        window.location.href = '/';
-
     }
 
     showTotalCart();

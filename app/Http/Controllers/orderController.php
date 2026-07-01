@@ -29,8 +29,8 @@ class orderController extends CartController
         if ($code) {
             $CouponData = $this->applyCoupon($request);
             $coupon = Cupon::where('code', $code)->first();
-            $discount = $CouponData['Discount Amount'] ?? 0;
-
+            $discount = $CouponData['Discount_Amount'] ?? 0;
+            
             if($coupon){
                 $couponId = $coupon->id;
             }
@@ -109,7 +109,7 @@ class orderController extends CartController
     public function singleOrder($id)
     {
         try {
-            $order = Order::with('orderItems.product')->where('id', $id)->get();
+            $order = Order::with('orderItems.product.productImages')->where('id', $id)->get();
             return $this->sendResponse(true, 'Order Detail Retrieve Successfully', $order, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 404);

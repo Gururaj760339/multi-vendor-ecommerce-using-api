@@ -23,6 +23,7 @@
 </html>
 
 <script src="{{ asset('storage/js/navbar.js') }}"></script>
+<script src="{{ asset('storage/js/addtocart.js') }}"></script>
 
 <script>
     updateAuthUI();
@@ -39,7 +40,7 @@
         });
 
         const data = await response.json();
-        //console.log();
+        //console.log(data.data.id);
 
         document.getElementById('productMain').innerHTML = `
             <section class="max-w-7xl mx-auto p-8">
@@ -84,15 +85,15 @@
                     <label class="font-semibold">Quantity</label>
 
                     <div class="flex mt-2">
-                        <button onclick="decrementQuantity()" class="px-4 py-2 border">-</button>
-                        <input id="quantity" value="1" class="w-16 text-center border">
-                        <button onclick="incrementQuantity()" class="px-4 py-2 border">+</button>
+                        <button onclick="decrementQuantity(${data.data.id})" class="px-4 py-2 border">-</button>
+                        <input id="qty-${data.data.id}" value="1" class="w-16 text-center border">
+                        <button onclick="incrementQuantity(${data.data.id})" class="px-4 py-2 border">+</button>
                     </div>
                 </div>
 
                 <!-- Buttons -->
                 <div class="mt-8 flex gap-4">
-                    <button class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">Add To Cart</button>
+                    <button onclick="addToCart(${data.data.id})" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">Add To Cart</button>
                     
                     <button onclick="addWishlist(${data.data.product_images[0].product_id})" class="border border-red-500 text-red-500 px-8 py-3 rounded-lg">♡ Wishlist</button>
                 </div>
@@ -119,18 +120,22 @@
 
     let quantity = 1;
 
-    function incrementQuantity(){
+    function incrementQuantity(id){
         quantity++;
-        document.getElementById('quantity').value = quantity;
+        document.getElementById('qty-' + id).value = quantity;
+        //console.log(quantity);
     }
 
-    function decrementQuantity(){
+    function decrementQuantity(id){
         if(quantity > 1){
             quantity--;
-            document.getElementById('quantity').value = quantity;
+            document.getElementById('qty-' + id).value = quantity;
+            //console.log(quantity);
         }
     }
 
+    showTotalCart();
     showWishlitValue();
+    
 
 </script>
