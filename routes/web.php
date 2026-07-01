@@ -106,6 +106,14 @@ Route::get('/vendor-edit-coupons', function(){
     return view('vendor/vendor_coupon_edit');
 }); 
 
+Route::get('/vendor-orders', function(){
+    return view('vendor/vendor_orders');
+}); 
+
+Route::get('/vendor-order-item', function(){
+    return view('vendor/vendor_order_item');
+}); 
+
 Route::get('/admin-dashboard', function () {
     return view('admin/admin_dashboard');
 });
@@ -120,4 +128,8 @@ Route::get('/admin-add-category', function () {
 
 Route::get('/admin-category-edit/{slug}', function(){
     return view('admin/admin_edit_category_page');
+});
+
+Route::get('/admin-orders', function(){
+    return view('admin/admin_order');
 });

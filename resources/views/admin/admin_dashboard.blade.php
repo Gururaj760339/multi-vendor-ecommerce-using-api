@@ -24,40 +24,54 @@
         </div>
 
 
-        <ul class="p-4 space-y-3">
+        <ul class="p-4 space-y-2">
 
-            <li class="bg-blue-600 p-3 rounded-lg cursor-pointer">
-                <i class="fa-solid fa-chart-line mr-2"></i>
-                Dashboard
+            <li>
+                <a href="/admin-dashboard"
+                    class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-lg font-medium shadow hover:bg-blue-700 transition">
+                    <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
             </li>
 
-
-            <li class="hover:bg-gray-700 p-3 rounded-lg cursor-pointer">
-                <i class="fa-solid fa-users mr-2"></i>
-                Users
+            <li>
+                <a href="/admin-users"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-users w-5 text-center"></i>
+                    <span>Users</span>
+                </a>
             </li>
 
-
-            <li class="hover:bg-gray-700 p-3 rounded-lg cursor-pointer">
-                <i class="fa-solid fa-store mr-2"></i>
-                Vendors
+            <li>
+                <a href="/admin-vendors"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-store w-5 text-center"></i>
+                    <span>Vendors</span>
+                </a>
             </li>
 
-
-            <li class="hover:bg-gray-700 p-3 rounded-lg cursor-pointer">
-                <i class="fa-solid fa-cart-shopping mr-2"></i>
-                Orders
+            <li>
+                <a href="/admin-orders"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center"></i>
+                    <span>Orders</span>
+                </a>
             </li>
 
-            <a href="/admin-category" class="hover:bg-gray-700 p-3 rounded-lg cursor-pointer">
-                <i class="fa-solid fa-list mr-2"></i>
-                Category
-            </a>
+            <li>
+                <a href="/admin-category"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-list w-5 text-center"></i>
+                    <span>Category</span>
+                </a>
+            </li>
 
-
-            <li class="hover:bg-gray-700 p-3 rounded-lg cursor-pointer">
-                <i class="fa-solid fa-gear mr-2"></i>
-                Settings
+            <li>
+                <a href="/admin-settings"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-gear w-5 text-center"></i>
+                    <span>Settings</span>
+                </a>
             </li>
 
         </ul>

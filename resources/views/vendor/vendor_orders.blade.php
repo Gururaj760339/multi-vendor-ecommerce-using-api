@@ -31,62 +31,8 @@
                     </tr>
                 </thead>
 
-                <tbody>
-
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4 font-semibold">#1001</td>
-                        <td class="p-4">John Doe</td>
-                        <td class="p-4">01712345678</td>
-                        <td class="p-4">01 Jul 2026</td>
-                        <td class="p-4">2</td>
-                        <td class="p-4">
-                            <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">
-                                Processing
-                            </span>
-                        </td>
-                        <td class="p-4 text-center">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                                View
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-4 font-semibold">#1002</td>
-                        <td class="p-4">Alice Smith</td>
-                        <td class="p-4">01812345678</td>
-                        <td class="p-4">02 Jul 2026</td>
-                        <td class="p-4">1</td>
-                        <td class="p-4">
-                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                                Delivered
-                            </span>
-                        </td>
-                        <td class="p-4 text-center">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                                View
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr class="hover:bg-gray-50">
-                        <td class="p-4 font-semibold">#1003</td>
-                        <td class="p-4">Rahim Ahmed</td>
-                        <td class="p-4">01912345678</td>
-                        <td class="p-4">03 Jul 2026</td>
-                        <td class="p-4">4</td>
-                        <td class="p-4">
-                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">
-                                Cancelled
-                            </span>
-                        </td>
-                        <td class="p-4 text-center">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                                View
-                            </button>
-                        </td>
-                    </tr>
-
+                <tbody id="orders-container">
+                    
                 </tbody>
 
             </table>
@@ -98,3 +44,52 @@
 </body>
 
 </html>
+
+<script>
+    async function showOrders(){
+        const response =  await fetch(`api/vendor/orders`, {
+            method: 'GET',
+            'headers' : {
+                'Authorization' : 'Bearer '+localStorage.getItem('token'),
+                'Accept' : 'application/json',
+            }
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        let html = '';
+
+        data.data.forEach(order => {
+            let createAt = new Date(order.created_at);
+            let formateDate = createAt.getDate() + '-' + (createAt.getMonth() + 1) + '-' + createAt.getFullYear(); 
+            html += `
+                <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4 font-semibold">#${order.id}</td>
+                        <td class="p-4">${order.user.name}</td>
+                        <td class="p-4">${order.user.phone}</td>
+                        <td class="p-4">${formateDate}</td>
+                        <td class="p-4">${order.total_items}</td>
+                        <td class="p-4">
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">
+                                ${order.order_status}
+                            </span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="orderDetails(${order.id})" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                                View
+                            </button>
+                        </td>
+                    </tr>
+            `;
+        });
+
+        document.getElementById('orders-container').innerHTML = html;
+    }
+
+    showOrders();
+
+    function orderDetails(orderId){
+        window.location.href = `/vendor-order-item?order_id=${orderId}`;
+    }
+</script>

@@ -146,10 +146,33 @@ class orderController extends CartController
         }
     }
 
+    public function vendorOrders()
+    {
+        try {
+            $vendorId = Auth::user()->vendor->id;
+            $order = Order::with(['user'])->whereHas('orderItems', function ($query) use ($vendorId) {
+                $query->where('vendor_id', $vendorId);
+            })
+            ->withCount(['OrderItems as total_items' => function($query) use ($vendorId){
+                $query->where('vendor_id', $vendorId);
+            }])
+            ->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Vendor Order Retrieve Successfully',
+                'data' => $order
+            ], 200);
+
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse(false, $e->getMessage(), 500);
+        }
+    }
+
     public function vendorOrderItems($id)
     {
         try {
-            $orderItems = OrderItem::with(['product', 'order.user'])->where('vendor_id', $id)->get();
+            $orderItems = OrderItem::with(['product.productImages', 'order.user'])->where('order_id', $id)->get();
             return $this->sendResponse(true, 'Vendor Order Retrieve Successfully', $orderItems, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
@@ -179,7 +202,7 @@ class orderController extends CartController
     public function adminAllOrder()
     {
         try {
-            $orders = Order::get();
+            $orders = Order::with(['user', 'payment'])->get();
             return $this->sendResponse(true, 'All Order Retrieve Successfully', $orders, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 404);

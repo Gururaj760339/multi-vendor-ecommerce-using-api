@@ -85,8 +85,9 @@ Route::post('/order/create', [orderController::class, 'orderStore'])->middleware
 Route::get('/orders', [orderController::class, 'allOrders'])->middleware(['auth:sanctum', 'can:isCustomer']);
 Route::get('/order/single/{id}', [orderController::class, 'singleOrder'])->middleware(['auth:sanctum', 'can:isCustomer']);
 Route::post('/orders/cancel/{id}', [orderController::class, 'orderCancel'])->middleware(['auth:sanctum', 'can:isCustomer']);
-Route::get('/ordersitems/{id}', [orderController::class, 'vendorOrderItems'])->middleware(['auth:sanctum', 'can:isVendor']);
-Route::post('/ordersitems/status/update/{id}', [orderController::class, 'updateStatus'])->middleware(['auth:sanctum', 'can:isVendor']);
+Route::get('/vendor/orders', [orderController::class, 'vendorOrders'])->middleware(['auth:sanctum', 'can:isVendor']);
+Route::get('/vendor/orders/items/{id}', [orderController::class, 'vendorOrderItems'])->middleware(['auth:sanctum', 'can:isVendor']);
+Route::post('/vendor/orders/items/status/update/{id}', [orderController::class, 'updateStatus'])->middleware(['auth:sanctum', 'can:isVendor']);
 Route::get('/admin/orders/list', [orderController::class, 'adminAllOrder'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/admin/order/status/update/{id}', [orderController::class, 'adminUpdateStatus'])->middleware(['auth:sanctum', 'can:isAdmin']);
 

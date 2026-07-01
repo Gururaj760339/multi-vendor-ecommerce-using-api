@@ -48,7 +48,7 @@
                     Coupon
                 </a>
 
-                <a class="block p-3 rounded-lg hover:bg-slate-700">
+                <a href="/vendor-orders" class="block p-3 rounded-lg hover:bg-slate-700">
                     <i class="fa-solid fa-cart-shopping mr-2"></i>
                     Orders
                 </a>
