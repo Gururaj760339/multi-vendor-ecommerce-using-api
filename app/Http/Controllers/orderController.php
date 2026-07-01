@@ -202,7 +202,9 @@ class orderController extends CartController
     public function adminAllOrder()
     {
         try {
-            $orders = Order::with(['user', 'payment'])->get();
+            $orders = Order::with(['user', 'payment'])
+            ->withCount(['orderItems as total_items'])
+            ->get();
             return $this->sendResponse(true, 'All Order Retrieve Successfully', $orders, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 404);

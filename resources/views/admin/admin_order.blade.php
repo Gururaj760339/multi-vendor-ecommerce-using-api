@@ -9,9 +9,7 @@
 </head>
 
 <body class="bg-gray-100">
-
     <div class="max-w-7xl mx-auto py-8 px-4">
-
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
@@ -22,7 +20,6 @@
 
         <!-- Order Table -->
         <div class="bg-white rounded-xl shadow overflow-x-auto">
-
             <table class="w-full text-sm">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
@@ -38,51 +35,93 @@
                     </tr>
                 </thead>
 
-                <tbody>
-
-                <tbody>
-
+                <tbody id="orderTableBody">
                     <!-- Order -->
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 font-semibold">#1001</td>
-                        <td class="px-6 py-4">John Doe</td>
-                        <td class="px-6 py-4">01712345678</td>
-                        <td class="px-6 py-4">3</td>
-                        <td class="px-6 py-4 font-semibold text-green-600">৳3,500</td>
-                        <td class="px-6 py-4">COD</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    async function showOrders(){
+        const response = await fetch(`api/admin/orders/list`, {
+            method : 'GET',
+            headers : {
+                'Authorization' : 'Bearer '+localStorage.getItem('token'),
+                'Accept' : 'application/json',
+            }
+        });
+        const data = await response.json();
+        //console.log(data);
+
+        let html = '';
+
+        data.data.forEach(orders => {
+            let createdAt = new Date(orders.created_at);
+            let formattedDate = createdAt.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            html += `
+                <tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold">#${orders.id}</td>
+                        <td class="px-6 py-4">${orders.user.name}</td>
+                        <td class="px-6 py-4">${orders.user.phone}</td>
+                        <td class="px-6 py-4">${orders.total_items}</td>
+                        <td class="px-6 py-4 font-semibold text-green-600">$${orders.payable_amount}</td>
+                        <td class="px-6 py-4">Now It is Static</td>
 
                         <!-- Status Dropdown -->
                         <td class="px-6 py-4">
-                            <select
+                            <select id="order-${orders.id}"
                                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                <option selected>Pending</option>
-                                <option>Confirmed</option>
-                                <option>Processing</option>
-                                <option>Shipped</option>
-                                <option>Delivered</option>
-                                <option>Cancelled</option>
+                                <option value="pending" ${orders.order_status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="processing" ${orders.order_status === 'processing' ? 'selected' : ''}>Processing</option>
+                                <option value="ready_to_ship" ${orders.order_status === 'ready_to_ship' ? 'selected' : ''}>Ready to Ship</option>
+                                <option value="shipped" ${orders.order_status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="delivered" ${orders.order_status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="refunded" ${orders.order_status === 'refunded' ? 'selected' : ''}>Refunded</option>
+                                <option value="cancelled" ${orders.order_status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
                             </select>
                         </td>
 
-                        <td class="px-6 py-4">01 Jul 2026</td>
+                        <td class="px-6 py-4">${formattedDate}</td>
 
                         <!-- Update Button -->
                         <td class="px-6 py-4 text-center">
-                            <button
+                            <button onclick="updateOrderStatus(${orders.id})"
                                 class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition">
                                 Update
                             </button>
                         </td>
                     </tr>
+            `;
+            
+        });
+        document.getElementById('orderTableBody').innerHTML = html;
+    }
 
-                </tbody>
-                </tbody>
-            </table>
+    showOrders();
 
-        </div>
+    async function updateOrderStatus(orderId){
+        const newStatus = document.getElementById(`order-${orderId}`).value;
+        //console.log(newStatus);
+        const response = await fetch(`api/admin/order/status/update/${orderId}`,{
+            method : 'POST',
+            headers : {
+                'Authorization' : 'Bearer '+localStorage.getItem('token'),
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                order_status : newStatus
+            })
+        });
 
-    </div>
-
-</body>
-
-</html>
+        showOrders();
+    }
+</script>
