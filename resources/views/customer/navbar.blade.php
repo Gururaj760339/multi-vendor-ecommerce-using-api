@@ -9,6 +9,7 @@
             <div class="hidden md:flex space-x-6 text-gray-600 font-medium">
                 <a href="#" class="hover:text-blue-600">Home</a>
                 <a href="#" class="hover:text-blue-600">Shop</a>
+                <a href="/customer-payment-history" class="hover:text-blue-600">Payment History</a>
                 <a href="/orders" class="hover:text-blue-600">Orders</a>
                 <a href="/carts" class="hover:text-blue-600">Cart</a>
                 <a href="/profile" class="hover:text-blue-600">Profile</a>
@@ -17,11 +18,8 @@
             <div class="flex items-center gap-4">
                 <a href="/edit-wishlist" class="relative group text-xl">
                     ❤️
-
                     <input id="wishlistCount" value="0" readonly
                         class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1 rounded-full w-6">
-
-
 
                     <div id="wishlistText"
                         class="absolute hidden group-hover:block top-8 right-0 

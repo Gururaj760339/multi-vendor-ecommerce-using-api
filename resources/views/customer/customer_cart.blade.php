@@ -355,7 +355,6 @@
     async function createOrder() {
         let couponInput = document.getElementById('code');
         let couponCode = couponInput ? couponInput.value : appliedCouponCode;
-        console.log(couponCode);
 
         const response = await fetch('api/order/create', {
             method: 'POST',
@@ -368,8 +367,9 @@
                 code: couponCode
             })
         });
+        const data = await response.json();
 
-        window.location.href = '/';
+        window.location.href = `/customer-payment?orderId=${data.data.id}`;
 
     }
 </script>

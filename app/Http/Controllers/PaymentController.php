@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentController extends BaseController
 {
-    public function placeCodOrder(Request $request, $orderId){
+    public function placeCodOrder(Request $request, $orderId)
+    {
         $request->validate([
             'payment_method' => 'required'
         ]);
@@ -20,7 +21,7 @@ class PaymentController extends BaseController
         try {
             $order = Order::where('id', $orderId)->first();
 
-            if($request->payment_method === 'cod'){
+            if ($request->payment_method === 'cod') {
                 Payment::create([
                     'order_id' => $orderId,
                     'payment_method' => $request->payment_method,
@@ -31,18 +32,32 @@ class PaymentController extends BaseController
             }
 
             return $this->sendResponse(true, 'Order placed with Cash on Delivery', null, 201);
-        }catch(\Exception $e){
-            return $this->sendErrorResponse(false, $e->getMessage(), 500); 
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
     }
 
-    public function paymentStatusUpdate(Request $request, $paymentId){
+    public function paymentDetails($orderId)
+    {
+        try {
+            $order = Order::where('id', $orderId)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            return $this->sendResponse(true, 'Single Order Retrieve Successfully', $order, 200);
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse(false, $e->getMessage(), 500);
+        }
+    }
+
+    public function paymentStatusUpdate(Request $request, $paymentId)
+    {
         $request->validate([
             'status' => 'required'
         ]);
 
         DB::beginTransaction();
-        try{
+        try {
             $payment = Payment::findOrFail($paymentId);
 
             if (!$payment) {
@@ -52,9 +67,9 @@ class PaymentController extends BaseController
             $payment->update([
                 'status' => $request->status
             ]);
-            
+
             $order = $payment->order;
-            if($request->status === 'completed'){
+            if ($request->status === 'completed') {
                 $order->update([
                     'order_status' => 'delivered'
                 ]);
@@ -68,8 +83,7 @@ class PaymentController extends BaseController
                 VendorEarning::where('order_id', $orderId)->update([
                     'status' => 'available'
                 ]);
-
-            } else if($request->status === 'refunded'){
+            } else if ($request->status === 'refunded') {
                 $order = $payment->order()->update([
                     'order_status' => 'cancelled'
                 ]);
@@ -78,21 +92,41 @@ class PaymentController extends BaseController
             DB::commit();
 
             return $this->sendResponse(true, 'Payment Status Update Successfully', null, 201);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
     }
 
-    public function paymentHistroy(){
-        try{
-            $paymentHistroy = Payment::
-                    whereHas('order', function($query){
-                        $query->where('user_id', Auth::user()->id);
-                    })->get();
+    public function paymentHistroy()
+    {
+        try {
+            $paymentHistroy = Payment::whereHas('order', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })->get();
 
-            return $this->sendResponse(true, 'All Payment Histroy Retrieve Successfully', $paymentHistroy, 200);
-        }catch(\Exception $e){
+            $totalPaymentCount = Payment::whereHas('order', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })->count('id');
+
+            $totalPaymentAmount = Payment::whereHas('order', function ($query) {
+                    $query->where('user_id', Auth::user()->id)->where('status', 'completed');
+                })->sum('amount');
+
+            $totalPendingPaymentAmount = Payment::whereHas('order', function ($query) {
+                    $query->where('user_id', Auth::user()->id)->where('status', 'pending');
+                })->sum('amount');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment Histroy Retrieve Successfully',
+                'paymentHistroy' => $paymentHistroy,
+                'totalPaymentCount' => $totalPaymentCount,
+                'totalPaymentAmount' => $totalPaymentAmount,
+                'totalPendingPaymentAmount' => $totalPendingPaymentAmount
+            ]);
+
+        } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
     }

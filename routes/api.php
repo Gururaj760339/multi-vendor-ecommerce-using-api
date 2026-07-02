@@ -91,6 +91,7 @@ Route::post('/vendor/orders/items/status/update/{id}', [orderController::class, 
 Route::get('/admin/orders/list', [orderController::class, 'adminAllOrder'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/admin/order/status/update/{id}', [orderController::class, 'adminUpdateStatus'])->middleware(['auth:sanctum', 'can:isAdmin']);
 
+Route::post('/payment/details/{id}', [PaymentController::class, 'paymentDetails'])->middleware(['auth:sanctum', 'can:isCustomer']);
 Route::post('/payment/create/{id}', [PaymentController::class, 'placeCodOrder'])->middleware(['auth:sanctum', 'can:isCustomer']);
 Route::post('/payment/status/update/{id}', [PaymentController::class, 'paymentStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/payment/histroy', [PaymentController::class, 'paymentHistroy'])->middleware(['auth:sanctum', 'can:isCustomer']);

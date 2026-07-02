@@ -58,6 +58,14 @@ Route::get('/order', function(){
     return view('customer/customer_single_order');
 });
 
+Route::get('/customer-payment', function(){
+    return view('customer/customer_payment');
+});
+
+Route::get('/customer-payment-history', function(){
+    return view('customer/customer_payment_history');
+});
+
 Route::get('vendor-dashboard', function () {
     return view('vendor/vendor_dashboard');
 });
