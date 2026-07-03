@@ -74,6 +74,15 @@
                 </a>
             </li>
 
+            <li>
+                <a href="/admin-reviews"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                   <i class="fa-solid fa-star w-5 text-center"></i>
+                    <span>Reviews</span>
+                </a>
+            </li>
+
+
         </ul>
 
 

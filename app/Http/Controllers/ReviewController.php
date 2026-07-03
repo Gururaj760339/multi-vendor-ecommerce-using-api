@@ -140,7 +140,7 @@ class ReviewController extends BaseController
 
     public function adminPanelReview(){
         try {
-            $reviews = Review::get();
+            $reviews = Review::with('user', 'product')->get();
             return $this->sendResponse(true, 'All Review Retrieve Successfully', $reviews, 200);
         } catch(\Exception $e){
             return $this->sendErrorResponse(false, $e->getMessage(), 404);
