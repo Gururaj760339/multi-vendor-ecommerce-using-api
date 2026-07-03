@@ -66,6 +66,14 @@ Route::get('/customer-payment-history', function(){
     return view('customer/customer_payment_history');
 });
 
+Route::get('/customer-add-review/{slug}', function(){
+    return view('customer/customer_add_review');
+});
+
+Route::get('/customer-edit-review', function(){
+    return view('customer/customer_review_edit');
+});
+
 Route::get('vendor-dashboard', function () {
     return view('vendor/vendor_dashboard');
 });

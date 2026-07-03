@@ -11,13 +11,44 @@
 
 
 <body class="bg-gray-100">
-
-
     <!-- Navbar -->
     @include('customer.navbar')
 
     <!-- Product Section -->
     <div id="productMain"></div>
+
+    <div class="max-w-7xl mx-auto py-10 px-5">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">
+                Customer Reviews
+            </h1>
+
+            <button hidden id="add-review-btn" onclick="addReviewPage()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+                <i class="fa-solid fa-plus mr-2"></i>
+                Add Review
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-4 text-left">Product</th>
+                        <th class="p-4 text-left">Customer</th>
+                        <th class="p-4 text-left">Rating</th>
+                        <th class="p-4 text-left">Review</th>
+                        <th class="p-4 text-left">Date</th>
+                        <th class="p-4 text-left">Status</th>
+                        <th class="p-4 text-center">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="review-details">
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>
@@ -120,14 +151,14 @@
 
     let quantity = 1;
 
-    function incrementQuantity(id){
+    function incrementQuantity(id) {
         quantity++;
         document.getElementById('qty-' + id).value = quantity;
         //console.log(quantity);
     }
 
-    function decrementQuantity(id){
-        if(quantity > 1){
+    function decrementQuantity(id) {
+        if (quantity > 1) {
             quantity--;
             document.getElementById('qty-' + id).value = quantity;
             //console.log(quantity);
@@ -136,6 +167,150 @@
 
     showTotalCart();
     showWishlitValue();
-    
 
+    function addReviewPage() {
+        const slug = window.location.pathname.split('/').pop();
+        window.location.href = `/customer-add-review/${slug}`;
+    }
+
+    function generateStars(rating) {
+        let stars = '';
+
+        for (let i = 1; i <= rating; i++) {
+            if (i <= rating) {
+                stars += `<span class="text-yellow-500">★</span>`;
+            }
+        }
+
+        return stars;
+    }
+
+    async function showReviews() {
+
+        const slug = window.location.pathname.split('/').pop();
+        const response = await fetch(`/api/product/${slug}/reviews`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        //console.log(data);
+
+        let html = '';
+
+        data.data.forEach(reviews => {
+            let createdAt = new Date(reviews.created_at);
+            let formattedDate = createdAt.getDate() + '-' + createdAt.getMonth() + '-' + createdAt
+                .getFullYear();
+            html += `
+            <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4">
+                            <div class="flex items-center gap-3">
+                                ${reviews.product.product_images.map(images => {
+                                    if(images.is_primary == 1){
+                                        return `
+                                            <img src="/storage/${images.image_path}" class="w-14 h-14 rounded-lg object-cover">
+                                        `;
+                                    }
+                                })}
+
+                                <div>
+                                    <h3 class="font-semibold">${reviews.product.name}</h3>
+                                    <p class="text-sm text-gray-500">Product ID : #${reviews.product.id}</p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="p-4">${reviews.user.name}</td>
+
+                        <td class="p-4">
+                            ${generateStars(reviews.rating)}
+                        </td>
+
+                        <td class="p-4">${reviews.comment}</td>
+                        <td class="p-4">${formattedDate}</td>
+
+                        <td class="p-4">
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                                ${reviews.status}
+                            </span>
+                        </td>
+
+                        <td class="p-4">
+                            <div class="flex justify-center gap-2">
+                                <button hidden id="delete-review-btn-${reviews.id}" onclick="deleteReview(${reviews.id})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+            `;
+        });
+
+        document.getElementById('review-details').innerHTML = html;
+
+        showDeleteReviewButton(slug, data.data);
+    }
+
+    showReviews();
+
+    async function showAddReviewButton() {
+        const slug = window.location.pathname.split('/').pop();
+        const response = await fetch(`/api/product/add/reviews/button/${slug}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('add-review-btn').hidden = false;
+        }
+    }
+
+    showAddReviewButton();
+
+    async function deleteReview(reviewId) {
+        const response = await fetch(`/api/review/delete/${reviewId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json'
+            }
+        });
+
+        showReviews();
+    }
+
+    async function showDeleteReviewButton(slug, reviewList) {
+        reviewList.forEach(async (review) => {
+            const response = await fetch(`/api/product/delete/reviews/button/${slug}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    review_id: review.id
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                let btn = document.getElementById(`delete-review-btn-${review.id}`);
+                if (btn) {
+                    btn.hidden = false;
+                }
+            }
+        })
+    }
 </script>

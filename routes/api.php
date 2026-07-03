@@ -97,10 +97,13 @@ Route::get('/payments', [PaymentController::class, 'adminPaymentDetails'])->midd
 Route::post('/payment/status/update/{id}', [PaymentController::class, 'paymentStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/payment/histroy', [PaymentController::class, 'paymentHistroy'])->middleware(['auth:sanctum', 'can:isCustomer']);
 
-Route::post('/review/post/{id}', [ReviewController::class, 'reviewStore'])->middleware(['auth:sanctum', 'can:isCustomer']);
-Route::get('/product/{id}/reviews', [ReviewController::class, 'singleProductReview']);
+Route::post('/review/post/{slug}', [ReviewController::class, 'reviewStore'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::get('/product/{slug}/reviews', [ReviewController::class, 'singleProductReview'])->middleware(['auth:sanctum', 'can:isCustomer']);;
+Route::get('/product/add/reviews/button/{slug}', [ReviewController::class, 'canReview'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::post('/product/delete/reviews/button/{slug}', [ReviewController::class, 'canDeleteReview'])->middleware(['auth:sanctum', 'can:isCustomer']);
+Route::post('/review/edit/{id}', [ReviewController::class, 'editReview'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/review/status/update/{id}', [ReviewController::class, 'reviewStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
-Route::delete('/review/delete/{id}', [ReviewController::class, 'reviewDelete']);//->middleware(['auth:sanctum', 'can:isAdmin']);
+Route::delete('/review/delete/{id}', [ReviewController::class, 'reviewDelete'])->middleware(['auth:sanctum', 'can:isAdminOrCustomer']);
 Route::get('/reviews/admin', [ReviewController::class, 'adminPanelReview'])->middleware(['auth:sanctum', 'can:isAdmin']);
 
 Route::get('/admin/dashboard', [adminController::class, 'adminDashboard'])->middleware(['auth:sanctum', 'can:isAdmin']);
