@@ -141,3 +141,7 @@ Route::get('/admin-category-edit/{slug}', function(){
 Route::get('/admin-orders', function(){
     return view('admin/admin_order');
 });
+
+Route::get('/admin-payments', function(){
+    return view('admin/admin_payment');
+});

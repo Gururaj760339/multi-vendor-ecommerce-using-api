@@ -67,10 +67,10 @@
             </li>
 
             <li>
-                <a href="/admin-settings"
+                <a href="/admin-payments"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
-                    <i class="fa-solid fa-gear w-5 text-center"></i>
-                    <span>Settings</span>
+                    <i class="fa-solid fa-credit-card w-5 text-center"></i>
+                    <span>Payment</span>
                 </a>
             </li>
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('total_amount', 10, 2);
             $table->decimal('discount_amount', 10, 2);
             $table->decimal('payable_amount', 10, 2);
-            $table->enum('order_status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('order_status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'ready_to_ship', 'refunded'])->default('pending');
             $table->string('shipping_address');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();

@@ -50,6 +50,17 @@ class PaymentController extends BaseController
         }
     }
 
+    public function adminPaymentDetails()
+    {
+        try {
+            $payments = Payment::with(['order.user'])->get();
+
+            return $this->sendResponse(true, 'Single Order Retrieve Successfully', $payments, 200);
+        } catch (\Exception $e) {
+            return $this->sendErrorResponse(false, $e->getMessage(), 500);
+        }
+    }
+
     public function paymentStatusUpdate(Request $request, $paymentId)
     {
         $request->validate([
