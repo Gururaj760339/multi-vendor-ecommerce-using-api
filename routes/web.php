@@ -161,3 +161,7 @@ Route::get('/admin-reviews', function(){
 Route::get('/admin-vendors', function(){
     return view('admin/admin_vendors');
 });
+
+Route::get('/admin-products', function(){
+    return view('admin/admin_products');
+});

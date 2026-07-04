@@ -71,7 +71,7 @@ class adminController extends BaseController
     public function ProductList()
     {
         try {
-            $products = Product::get();
+            $products = Product::with(['productImages', 'vendor', 'category'])->get();
             return $this->sendResponse(true, 'All Product Retrieve Successfully', $products, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 404);
@@ -91,24 +91,24 @@ class adminController extends BaseController
         }
     }
 
-    public function pendingWithdraw()
+    public function AllWithdraws()
     {
         try {
-            $pending_withdraw = VendorWithdrawal::with('vendor')->where('status', 'pending')->get();
-            return $this->sendResponse(true, 'All Pending Withdrawals Reterieve Successfully', $pending_withdraw, 200);
+            $withdraws = VendorWithdrawal::with('vendor')->get();
+            return $this->sendResponse(true, 'All Pending Withdrawals Reterieve Successfully', $withdraws, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
     }
 
-    public function withdrawApproved($withdrawId)
+    public function withdrawStatusUpdate(Request $request, $withdrawId)
     {
         try {
             VendorWithdrawal::where('id', $withdrawId)->update([
-                'status' => 'approved'
+                'status' => $request->status
             ]);
 
-            return $this->sendResponse(true, 'Withdraw Approved Successfully', null, 201);
+            return $this->sendResponse(true, 'Withdraw Status Update Successfully', null, 201);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }

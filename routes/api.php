@@ -111,8 +111,8 @@ Route::get('/admin/vendors/list', [adminController::class, 'vendorShow'])->middl
 Route::post('/admin/vendor/status/{id}', [adminController::class, 'VendorStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/products', [adminController::class, 'ProductList'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/admin/products/status/update/{id}', [adminController::class, 'productStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
-Route::get('/admin/pending/withdrawals', [adminController::class, 'pendingWithdraw'])->middleware(['auth:sanctum', 'can:isAdmin']);
-Route::post('/admin/withdrawals/status/update/{id}', [adminController::class, 'withdrawApproved'])->middleware(['auth:sanctum', 'can:isAdmin']);
+Route::get('/admin/pending/withdrawals', [adminController::class, 'AllWithdraws'])->middleware(['auth:sanctum', 'can:isAdmin']);
+Route::post('/admin/withdrawals/status/update/{id}', [adminController::class, 'withdrawStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/allusers', [adminController::class, 'allUsers'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/revenue/reports', [adminController::class, 'adminRevenueReport'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/top/vendor', [adminController::class, 'topVendorReport'])->middleware(['auth:sanctum', 'can:isAdmin']);
