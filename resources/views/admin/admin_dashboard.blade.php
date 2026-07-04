@@ -83,6 +83,14 @@
                         Products
                 </a>
             </li>
+
+            <li>
+                <a href="/admin-withdraw"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-money-bill-transfer w-5 text-center"></i>
+                        Withdraw
+                </a>
+            </li>
         </ul>
 
         <!-- Logout -->

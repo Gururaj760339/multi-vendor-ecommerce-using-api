@@ -57,6 +57,11 @@
                     <i class="fa-solid fa-wallet mr-2"></i>
                     Withdraw
                 </a>
+
+                <a class="block p-3 rounded-lg hover:bg-slate-700">
+                    <i class="fa-solid fa-coins mr-2"></i>
+                    Earning
+                </a>
             </nav>
         </aside>
         <!-- Main -->
@@ -92,30 +97,7 @@
                     <h1 class="text-3xl font-bold mb-6">
                         Dashboard
                     </h1>
-                    <div class="grid md:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-box text-indigo-600 text-3xl"></i>
-                            <p class="text-gray-500 mt-3">Products</p>
-                            <h2 class="text-3xl font-bold">120</h2>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-cart-shopping text-green-600 text-3xl"></i>
-                            <p class="text-gray-500 mt-3">Orders</p>
-                            <h2 class="text-3xl font-bold">45</h2>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-dollar-sign text-yellow-500 text-3xl"></i>
-                            <p class="text-gray-500 mt-3">Sales</p>
-                            <h2 class="text-3xl font-bold">$5000</h2>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-wallet text-purple-600 text-3xl"></i>
-                            <p class="text-gray-500 mt-3">Earnings</p>
-                            <h2 class="text-3xl font-bold">$1200</h2>
-                        </div>
+                    <div id="card-details" class="grid md:grid-cols-7 gap-6">
                     </div>
 
                 </div>
@@ -141,7 +123,62 @@
         });
 
         localStorage.removeItem('token');
-        window.location.href = 'http://127.0.0.1:8000/loginpage';
-
+        window.location.href = '/loginpage';
     }
+
+    async function showVendorDashboard(){
+        const response = await fetch('api/vendor/dashboard', {
+            method : 'GET',
+            headers : {
+                'Authorization' : 'Bearer '+localStorage.getItem('token'),
+                'Accept' : 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        document.getElementById('card-details').innerHTML = `
+            <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-box text-indigo-600 text-3xl"></i>
+                            <p class="text-gray-500 mt-3">Products</p>
+                            <h2 class="text-3xl font-bold">${data.total_products}</h2>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-cart-shopping text-green-600 text-3xl"></i>
+                            <p class="text-gray-500 mt-3">Orders</p>
+                            <h2 class="text-3xl font-bold">${data.total_order}</h2>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-dollar-sign text-yellow-500 text-3xl"></i>
+                            <p class="text-gray-500 mt-3">Sales</p>
+                            <h2 class="text-3xl font-bold">$${data.total_sales}</h2>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-wallet text-purple-600 text-3xl"></i>
+                            <p class="text-gray-500 mt-3">Earnings</p>
+                            <h2 class="text-3xl font-bold">$${data.net_earnings}</h2>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-hourglass-half text-yellow-500 text-3xl"></i>                            <p class="text-gray-500 mt-3">Pending Sales</p>
+                            <h2 class="text-3xl font-bold">$${data.pending_total_sales}</h2>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-coins text-yellow-500 text-3xl"></i>                            <p class="text-gray-500 mt-3">Pending Earnings</p>
+                            <h2 class="text-3xl font-bold">$${data.pending_net_earnings}</h2>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <i class="fa-solid fa-money-bill-transfer text-purple-600 text-3xl"></i> Pending Withdraw                            <p class="text-gray-500 mt-3">Pending Withdraw</p>
+                            <h2 class="text-3xl font-bold">${data.pending_withdrawals}</h2>
+                        </div>
+        `;
+    }
+
+    showVendorDashboard();
 </script>

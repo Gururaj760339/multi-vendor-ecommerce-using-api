@@ -10,7 +10,7 @@ Route::get('/register', function(){
     return view('auth/register');
 });
 
-Route::get('loginpage', function () {
+Route::get('/loginpage', function () {
     return view('auth/loginpage');
 });
 
@@ -164,4 +164,8 @@ Route::get('/admin-vendors', function(){
 
 Route::get('/admin-products', function(){
     return view('admin/admin_products');
+});
+
+Route::get('/admin-withdraw', function(){
+    return view('admin/admin_withdraw');
 });
