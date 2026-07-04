@@ -68,37 +68,24 @@ class adminController extends BaseController
         }
     }
 
-    public function pendingProductList()
+    public function ProductList()
     {
         try {
-            $products = Product::where('status', 'pending')->get();
-            return $this->sendResponse(true, 'All Pending Product Retrieve Successfully', $products, 200);
+            $products = Product::get();
+            return $this->sendResponse(true, 'All Product Retrieve Successfully', $products, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 404);
         }
     }
 
-    public function activeProduct($productId)
+    public function productStatusUpdate(Request $request, $productId)
     {
         try {
             Product::where('id', $productId)->update([
-                'status' => 'active'
+                'status' => $request->status
             ]);
 
-            return $this->sendResponse(true, 'Product Active Successfully', null, 201);
-        } catch (\Exception $e) {
-            return $this->sendErrorResponse(false, $e->getMessage(), 500);
-        }
-    }
-
-    public function rejectProduct($productId)
-    {
-        try {
-            Product::where('id', $productId)->update([
-                'status' => 'rejected'
-            ]);
-
-            return $this->sendResponse(true, 'Product Rejected Successfully', null, 201);
+            return $this->sendResponse(true, 'Product Status Successfully', null, 201);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }

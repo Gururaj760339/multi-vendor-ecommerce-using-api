@@ -157,3 +157,7 @@ Route::get('/admin-payments', function(){
 Route::get('/admin-reviews', function(){
     return view('admin/admin_reviews');
 });
+
+Route::get('/admin-vendors', function(){
+    return view('admin/admin_vendors');
+});
