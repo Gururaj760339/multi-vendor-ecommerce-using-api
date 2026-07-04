@@ -130,6 +130,10 @@ Route::get('/vendor-order-item', function(){
     return view('vendor/vendor_order_item');
 }); 
 
+Route::get('/vendor-earning-history', function(){
+    return view('vendor/vendor_earning_list');
+}); 
+
 Route::get('/admin-dashboard', function () {
     return view('admin/admin_dashboard');
 });

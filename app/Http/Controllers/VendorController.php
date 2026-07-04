@@ -127,7 +127,7 @@ class VendorController extends BaseController
     public function vendorEarningHistroy()
     {
         try {
-            $vendorEarning = VendorEarning::where('vendor_id', Auth::user()->vendor->id)->get();
+            $vendorEarning = VendorEarning::with(['order.user'])->where('vendor_id', Auth::user()->vendor->id)->get();
             return $this->sendResponse(true, 'Vendor Earning Histroy Retrieve Successfully', $vendorEarning, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);

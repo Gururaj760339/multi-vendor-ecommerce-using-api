@@ -21,6 +21,6 @@ class Order extends Model
     }
 
     public function vendorEarning(){
-        return $this->belongsTo(VendorEarning::class);
+        return $this->hasOne(VendorEarning::class);
     }
 }

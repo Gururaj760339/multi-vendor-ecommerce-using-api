@@ -58,7 +58,7 @@
                     Withdraw
                 </a>
 
-                <a class="block p-3 rounded-lg hover:bg-slate-700">
+                <a href="/vendor-earning-history" class="block p-3 rounded-lg hover:bg-slate-700">
                     <i class="fa-solid fa-coins mr-2"></i>
                     Earning
                 </a>

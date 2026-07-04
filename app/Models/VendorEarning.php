@@ -12,8 +12,8 @@ class VendorEarning extends Model
         return $this->belongsTo(Vendor::class);
     }
 
-    public function orders(){
-        return $this->hasMany(Order::class);
+    public function order(){
+        return $this->belongsTo(Order::class);
     }
 
     public function orderItems(){
