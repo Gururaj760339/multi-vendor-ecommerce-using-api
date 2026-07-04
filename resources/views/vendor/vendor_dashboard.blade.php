@@ -53,7 +53,7 @@
                     Orders
                 </a>
 
-                <a class="block p-3 rounded-lg hover:bg-slate-700">
+                <a href="/vendor-withdraw-history" class="block p-3 rounded-lg hover:bg-slate-700">
                     <i class="fa-solid fa-wallet mr-2"></i>
                     Withdraw
                 </a>
@@ -136,7 +136,7 @@
         });
 
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
 
         document.getElementById('card-details').innerHTML = `
             <div class="bg-white p-6 rounded-xl shadow">
@@ -164,17 +164,20 @@
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-hourglass-half text-yellow-500 text-3xl"></i>                            <p class="text-gray-500 mt-3">Pending Sales</p>
+                            <i class="fa-solid fa-hourglass-half text-yellow-500 text-3xl"></i>                            
+                            <p class="text-gray-500 mt-3">Pending Sales</p>
                             <h2 class="text-3xl font-bold">$${data.pending_total_sales}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-coins text-yellow-500 text-3xl"></i>                            <p class="text-gray-500 mt-3">Pending Earnings</p>
+                            <i class="fa-solid fa-coins text-yellow-500 text-3xl"></i>                            
+                            <p class="text-gray-500 mt-3">Pending Earnings</p>
                             <h2 class="text-3xl font-bold">$${data.pending_net_earnings}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
-                            <i class="fa-solid fa-money-bill-transfer text-purple-600 text-3xl"></i> Pending Withdraw                            <p class="text-gray-500 mt-3">Pending Withdraw</p>
+                            <i class="fa-solid fa-money-bill-transfer text-purple-600 text-3xl"></i>                           
+                            <p class="text-gray-500 mt-3">Pending Withdraw</p>
                             <h2 class="text-3xl font-bold">${data.pending_withdrawals}</h2>
                         </div>
         `;

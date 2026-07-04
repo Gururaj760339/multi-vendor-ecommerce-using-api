@@ -107,6 +107,8 @@ class VendorController extends BaseController
             $total_order = VendorEarning::where('vendor_id', $vendorId)->count('id');
             $pending_withdrawals = VendorWithdrawal::where('vendor_id', $vendorId)->where('status', 'pending')->sum('amount');
             $total_products = Product::where('vendor_id', $vendorId)->count('id');
+            $total_earning = VendorEarning::where('vendor_id', $vendorId)->where('status', 'available')->sum('net_amount');
+
 
             return response()->json([
                 'success' => true,
@@ -139,12 +141,12 @@ class VendorController extends BaseController
         try {
             $request->validate(
                 [
-                    'amount' => 'required|integer|min:10000|max:100000',
+                    'amount' => 'required|integer|min:50|max:100000',
                     'payment_method' => 'required',
                     'payment_details' => 'required'
                 ],
                 [
-                    'amount.min' => 'The minimum withdrawal amount is 10,000 TK.',
+                    'amount.min' => 'The minimum withdrawal amount is 50$.',
                     'amount.max' => 'The maximum withdrawal amount per transaction is 100,000 TK.',
                 ]
             );
@@ -175,6 +177,38 @@ class VendorController extends BaseController
             return $this->sendResponse(true, 'Withdraw Request Successfully', null, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
+        }
+    }
+
+    function withdrawCalculation()
+    {
+        try {
+            $vendorId = Auth::user()->vendor->id;
+            $vendor = VendorWithdrawal::where('vendor_id', $vendorId)->exists();
+
+            $totalEarning = VendorEarning::where('vendor_id', $vendorId)->where('status', 'available')->sum('net_amount');
+            $totalWithdraw = 0;
+            $pendingWithdraw = 0;
+
+            if ($vendor) {
+                $totalWithdraw = VendorWithdrawal::where('vendor_id', $vendorId)->where('status', 'approved')->sum('amount');
+                $pendingWithdraw = VendorWithdrawal::where('vendor_id', $vendorId)->where('status', 'pending')->sum('amount');
+            }
+
+            $currentBalance = $totalEarning - $totalWithdraw;
+
+            return response()->json([
+                'success' => true,
+                'totalEarning' => $totalEarning,
+                'totalWithdraw' => $totalWithdraw,
+                'currentBalance' => $currentBalance,
+                'pendingWithdraw' => $pendingWithdraw
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'success' => true,
+                'message' => $e->getMessage()
+            ]);
         }
     }
 

@@ -134,6 +134,14 @@ Route::get('/vendor-earning-history', function(){
     return view('vendor/vendor_earning_list');
 }); 
 
+Route::get('/vendor-withdraw-history', function(){
+    return view('vendor/vendor_withdraw');
+});
+
+Route::get('/vendor-withdraw-request', function(){
+    return view('vendor/vendor_withdraw_request');
+});
+
 Route::get('/admin-dashboard', function () {
     return view('admin/admin_dashboard');
 });

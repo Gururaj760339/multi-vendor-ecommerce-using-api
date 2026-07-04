@@ -35,6 +35,7 @@ Route::get('/vendor/profile', [VendorController::class, 'vendorProfile'])->middl
 Route::post('/vendor/profile/update/{id}', [VendorController::class, 'vendorProfileUpdate'])->middleware(['auth:sanctum', 'can:isVendor']);
 Route::get('/vendor/earning', [VendorController::class, 'vendorEarningHistroy'])->middleware(['auth:sanctum', 'can:isVendor']);
 Route::post('/vendor/withdraw/request', [VendorController::class, 'vendorWithdraw'])->middleware(['auth:sanctum', 'can:isVendor']);
+Route::get('/vendor/withdraw/calculation', [VendorController::class, 'withdrawCalculation'])->middleware(['auth:sanctum', 'can:isVendor']);
 Route::get('/vendor/dashboard', [VendorController::class, 'vendorDashboard'])->middleware(['auth:sanctum', 'can:isVendor']);
 Route::get('/vendor/withdraw/histroy', [VendorController::class, 'withdrawHistroy'])->middleware(['auth:sanctum', 'can:isVendor']);
 Route::get('/public/shop/{slug}', [VendorController::class, 'publicShop'])->middleware(['auth:sanctum', 'can:isCustomer']);
