@@ -108,8 +108,7 @@ Route::get('/reviews/admin', [ReviewController::class, 'adminPanelReview'])->mid
 
 Route::get('/admin/dashboard', [adminController::class, 'adminDashboard'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/vendors/list', [adminController::class, 'vendorShow'])->middleware(['auth:sanctum', 'can:isAdmin']);
-Route::post('/admin/vendor/approve/{id}', [adminController::class, 'approveVendor'])->middleware(['auth:sanctum', 'can:isAdmin']);
-Route::post('/admin/vendor/suspande/{id}', [adminController::class, 'suspendVendor'])->middleware(['auth:sanctum', 'can:isAdmin']);
+Route::post('/admin/vendor/status/{id}', [adminController::class, 'VendorStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/pending/products', [adminController::class, 'pendingProductList'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/admin/active/products/{id}', [adminController::class, 'activeProduct'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/admin/reject/products/{id}', [adminController::class, 'rejectProduct'])->middleware(['auth:sanctum', 'can:isAdmin']);

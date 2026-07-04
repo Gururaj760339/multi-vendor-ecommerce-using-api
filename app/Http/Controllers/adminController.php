@@ -24,6 +24,7 @@ class adminController extends BaseController
             $total_customers = User::where('role', 'customer')->count('id');
             $total_vendors = User::where('role', 'vendor')->count('id');
             $total_orders = Order::count('id');
+            $recent_orders = Order::with(['user'])->latest()->limit(10)->get();
 
             return response()->json([
                 'status' => true,
@@ -32,7 +33,8 @@ class adminController extends BaseController
                 'total_commission_earned' => $total_commission_earned,
                 'total_customers' => $total_customers,
                 'total_vendors' => $total_vendors,
-                'total_orders' => $total_orders
+                'total_orders' => $total_orders,
+                'recent_orders' => $recent_orders
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -52,26 +54,15 @@ class adminController extends BaseController
         }
     }
 
-    public function approveVendor($vendorId)
+    public function VendorStatusUpdate(Request $request, $vendorId)
     {
         try {
+            $newStatus = $request->status;
             Vendor::where('id', $vendorId)->update([
-                'status' => 'approved'
+                'status' => $newStatus
             ]);
 
-            return $this->sendResponse(true, 'Vendor Approved Successfully', null, 201);
-        } catch (\Exception $e) {
-            return $this->sendErrorResponse(false, 'Vendor Approved Failed!', 500);
-        }
-    }
-
-    public function suspendVendor($vendorId)
-    {
-        try {
-            Vendor::where('id', $vendorId)->update([
-                'status' => 'suspanded'
-            ]);
-            return $this->sendResponse(true, 'Vendor Suspande Successfully', null, 201);
+            return $this->sendResponse(true, 'Vendor Status Update Successfully', null, 201);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
