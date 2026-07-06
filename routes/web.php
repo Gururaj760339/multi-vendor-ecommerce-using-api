@@ -178,6 +178,6 @@ Route::get('/admin-products', function(){
     return view('admin/admin_products');
 });
 
-Route::get('/admin-withdraw', function(){
+Route::get('/admin-pending-withdraw', function(){
     return view('admin/admin_withdraw');
 });

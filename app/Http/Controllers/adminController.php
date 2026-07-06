@@ -94,8 +94,13 @@ class adminController extends BaseController
     public function AllWithdraws()
     {
         try {
-            $withdraws = VendorWithdrawal::with('vendor')->get();
-            return $this->sendResponse(true, 'All Pending Withdrawals Reterieve Successfully', $withdraws, 200);
+            $withdraws = VendorWithdrawal::with('vendor.user')->where('status', 'pending')->get();
+            $totalPendingRequest = VendorWithdrawal::with('vendor.user')->where('status', 'pending')->count();
+            return response()->json([
+                'success' => true,
+                'data' => $withdraws,
+                'totalPendingRequest' => $totalPendingRequest
+            ]);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
@@ -103,9 +108,15 @@ class adminController extends BaseController
 
     public function withdrawStatusUpdate(Request $request, $withdrawId)
     {
+        $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+            'admin_note' => 'nullable|string|max:500',
+        ]);
+
         try {
             VendorWithdrawal::where('id', $withdrawId)->update([
-                'status' => $request->status
+                'status' => $request->status,
+                'admin_note' => $request->admin_note
             ]);
 
             return $this->sendResponse(true, 'Withdraw Status Update Successfully', null, 201);
@@ -146,24 +157,26 @@ class adminController extends BaseController
         }
     }
 
-    public function topVendorReport(){
-        try{
+    public function topVendorReport()
+    {
+        try {
             $vendor = VendorEarning::with('vendor')->orderBy('net_amount', 'desc')->limit(1)->first();
             return $this->sendResponse(true, 'Top Perform Vendor Report Retrieve Successfully', $vendor, 200);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
     }
 
-    public function topProductReport(){
-        try{
+    public function topProductReport()
+    {
+        try {
             $product = OrderItem::with('product')
-                        ->selectRaw('product_id, sum(quantity) as total_quantity')
-                        ->groupBy('product_id')
-                        ->orderBy('quantity', 'desc')
-                        ->first();
+                ->selectRaw('product_id, sum(quantity) as total_quantity')
+                ->groupBy('product_id')
+                ->orderBy('quantity', 'desc')
+                ->first();
             return $product;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }
     }

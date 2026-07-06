@@ -12,34 +12,25 @@
 </head>
 
 <body class="bg-gray-100">
-
     <div class="p-8">
-
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h2 class="text-3xl font-bold text-gray-800">
-                    Withdraw Requests
-                </h2>
-                <p class="text-gray-500 mt-1">
-                    Manage vendor withdraw requests
-                </p>
+                <h2 class="text-3xl font-bold text-gray-800">Withdraw Requests</h2>
+                <p class="text-gray-500 mt-1">Manage vendor withdraw requests</p>
             </div>
 
             <div
                 class="bg-blue-600 text-white px-5 py-3 rounded-xl flex items-center gap-3 shadow">
                 <i class="fa-solid fa-money-bill-transfer text-xl"></i>
-                <span class="font-semibold">Total Requests : 12</span>
+                <p id="total-request" class="font-semibold"></p>
             </div>
         </div>
 
         <!-- Table -->
         <div class="bg-white rounded-xl shadow overflow-x-auto">
-
             <table class="w-full text-sm">
-
                 <thead class="bg-gray-800 text-white">
-
                     <tr>
                         <th class="px-6 py-4 text-left">#</th>
                         <th class="px-6 py-4 text-left">Vendor</th>
@@ -48,196 +39,98 @@
                         <th class="px-6 py-4 text-left">Account</th>
                         <th class="px-6 py-4 text-left">Date</th>
                         <th class="px-6 py-4 text-left">Current Status</th>
+                        <th class="px-6 py-4 text-left">Admin Note (Optional)</th>
                         <th class="px-6 py-4 text-left">Update Status</th>
                         <th class="px-6 py-4 text-center">Action</th>
                     </tr>
-
                 </thead>
 
-                <tbody class="divide-y divide-gray-200">
+                <tbody id="withdraw-details" class="divide-y divide-gray-200">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
 
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-gray-50">
+<script>
+    
+    async function showWithdawDetails(){
+        const response = await fetch('api/admin/pending/withdrawals', {
+            method : 'GET',
+            headers : {
+                'Authorization' : 'Bearer '+localStorage.getItem('token'),
+                'Accept' : 'application/json'
+            }
+        });
 
-                        <td class="px-6 py-5">1</td>
+        const data = await response.json();
+        document.getElementById('total-request').innerHTML = `Total Requests : ${data.totalPendingRequest}`;
+        
+        let html = '';
+        data.data.forEach(withdraw => {
+            let createdAt = new Date(withdraw.created_at);
+            let formatedDate = createdAt.getDay()+ '-' +createdAt.getMonth()+ '-' +createdAt.getFullYear();
+            html += `
+                <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-5">${withdraw.id}</td>
+                        <td class="px-6 py-5">${withdraw.vendor.user.name}</td>
+                        <td class="px-6 py-5 font-semibold text-green-600">$${withdraw.amount}</td>
+                        <td class="px-6 py-5">${withdraw.payment_method}</td>
+                        <td class="px-6 py-5">${withdraw.payment_details}</td>
+                        <td class="px-6 py-5">${formatedDate}</td>
 
                         <td class="px-6 py-5">
-                            John Vendor
-                        </td>
-
-                        <td class="px-6 py-5 font-semibold text-green-600">
-                            $250
-                        </td>
-
-                        <td class="px-6 py-5">
-                            Bank
-                        </td>
-
-                        <td class="px-6 py-5">
-                            123456789
-                        </td>
-
-                        <td class="px-6 py-5">
-                            04 Jul 2026
-                        </td>
-
-                        <td class="px-6 py-5">
-
                             <span
                                 class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                Pending
+                                ${withdraw.status}
                             </span>
-
                         </td>
 
                         <td class="px-6 py-5">
+                            <textarea id="admin_note"
+                                class="w-64 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                                rows="2"
+                                placeholder="Write admin note...">${withdraw.admin_note ?? ''}</textarea>
+                        </td>
 
-                            <select
+                        <td class="px-6 py-5">
+                            <select id="status"
                                 class="w-44 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
-
-                                <option selected>Pending</option>
-                                <option>Approved</option>
-                                <option>Rejected</option>
-
+                                <option value="pending" ${withdraw.status == 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="approved" ${withdraw.status == 'approved' ? 'selected' : ''}>Approved</option>
+                                <option value="rejected" ${withdraw.status == 'rejected' ? 'selected' : ''}>Rejected</option>
                             </select>
-
                         </td>
 
                         <td class="px-6 py-5 text-center">
-
-                            <button
+                            <button onclick="updateWithdrawStatus(${withdraw.id})"
                                 class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition">
                                 Update
                             </button>
-
                         </td>
-
                     </tr>
+            `;
+        });
 
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-gray-50">
+        document.getElementById('withdraw-details').innerHTML = html;
+    }
 
-                        <td class="px-6 py-5">2</td>
+    showWithdawDetails();
 
-                        <td class="px-6 py-5">
-                            Alex Store
-                        </td>
+    async function updateWithdrawStatus(withdrawId){
+        const response = await fetch(`api/admin/withdrawals/status/update/${withdrawId}`,{
+            method : 'POST',
+            headers : {
+                'Authorization' : 'Bearer '+localStorage.getItem('token'),
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                status : document.getElementById('status').value,
+                admin_note : document.getElementById('admin_note').value
+            })
+        });
 
-                        <td class="px-6 py-5 font-semibold text-green-600">
-                            $520
-                        </td>
-
-                        <td class="px-6 py-5">
-                            bKash
-                        </td>
-
-                        <td class="px-6 py-5">
-                            017XXXXXXXX
-                        </td>
-
-                        <td class="px-6 py-5">
-                            03 Jul 2026
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            <span
-                                class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                Approved
-                            </span>
-
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            <select
-                                class="w-44 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
-
-                                <option>Pending</option>
-                                <option selected>Approved</option>
-                                <option>Rejected</option>
-
-                            </select>
-
-                        </td>
-
-                        <td class="px-6 py-5 text-center">
-
-                            <button
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition">
-                                Update
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-gray-50">
-
-                        <td class="px-6 py-5">3</td>
-
-                        <td class="px-6 py-5">
-                            Fashion House
-                        </td>
-
-                        <td class="px-6 py-5 font-semibold text-green-600">
-                            $140
-                        </td>
-
-                        <td class="px-6 py-5">
-                            Nagad
-                        </td>
-
-                        <td class="px-6 py-5">
-                            018XXXXXXXX
-                        </td>
-
-                        <td class="px-6 py-5">
-                            02 Jul 2026
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            <span
-                                class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                Rejected
-                            </span>
-
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            <select
-                                class="w-44 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
-
-                                <option>Pending</option>
-                                <option>Approved</option>
-                                <option selected>Rejected</option>
-
-                            </select>
-
-                        </td>
-
-                        <td class="px-6 py-5 text-center">
-
-                            <button
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition">
-                                Update
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</body>
-
-</html>
+        showWithdawDetails();
+    }
+</script>
