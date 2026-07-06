@@ -128,7 +128,12 @@ class adminController extends BaseController
     public function allUsers()
     {
         try {
-            $allUsers = User::get();
+            $allUsers = User::query()
+                        ->where('role', 'customer')
+                        ->withCount('orders')
+                        ->withSum('orders', 'payable_amount')
+                        ->get();
+            
             return $this->sendResponse(true, 'All User Retrieve Successfully', $allUsers, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);

@@ -181,3 +181,7 @@ Route::get('/admin-products', function(){
 Route::get('/admin-pending-withdraw', function(){
     return view('admin/admin_withdraw');
 });
+
+Route::get('/admin-users', function(){
+    return view('admin/admin_all_customer');
+});
