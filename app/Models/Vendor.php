@@ -25,7 +25,7 @@ class Vendor extends Model
     }
 
     public function vendorEarning(){
-        return $this->hasOne(VendorEarning::class);
+        return $this->hasMany(VendorEarning::class);
     }
 
     public function vendorWithdrawals(){

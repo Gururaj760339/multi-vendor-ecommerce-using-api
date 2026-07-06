@@ -189,3 +189,7 @@ Route::get('/admin-users', function(){
 Route::get('/admin-revenue-reports', function(){
     return view('admin/admin_show_revenue_reports');
 });
+
+Route::get('/admin-top-vendor', function(){
+    return view('admin/admin_top_vendor');
+});
