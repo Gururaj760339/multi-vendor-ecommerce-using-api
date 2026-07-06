@@ -70,8 +70,8 @@ Route::get('/customer-add-review/{slug}', function(){
     return view('customer/customer_add_review');
 });
 
-Route::get('/customer-edit-review', function(){
-    return view('customer/customer_review_edit');
+Route::get('/vendor-shop', function(){
+    return view('customer/customer_vendor_shop');
 });
 
 Route::get('vendor-dashboard', function () {

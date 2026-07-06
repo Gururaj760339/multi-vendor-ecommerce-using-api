@@ -145,7 +145,7 @@
         });
 
         const data = await response.json();
-        //console.log(data.data);
+        console.log(data.data);
         let html = '';
 
         data.data.forEach(products => {
@@ -177,9 +177,9 @@
 
                 <div class="p-4">
 
-                    <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
+                    <button onclick="vendorShopPage('${products.vendor.slug}')" class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
                         Vendor: ${products.vendor.user.name}
-                    </span>
+                    </button>
 
                     <h3 class="font-semibold mt-2">
                         ${products.name}
@@ -270,4 +270,8 @@
     }
 
     showTotalCart();
+
+    function vendorShopPage(slug){
+        window.location.href = `/vendor-shop?${slug}`;
+    }
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
@@ -226,7 +227,10 @@ class VendorController extends BaseController
     public function publicShop($slug)
     {
         try {
-            $vendorData = Vendor::where('slug', $slug)->first();
+            $vendorData = Vendor::with(['user', 'products' => function($query){
+                $query->with('productImages')
+                    ->withAvg('reviews', 'rating');
+            }])->where('slug', $slug)->first();
 
             if (!$vendorData) {
                 return $this->sendErrorResponse(false, 'Shop Not Found', 500);
@@ -238,13 +242,15 @@ class VendorController extends BaseController
                 $query->where('vendor_id', $vendorId);
             })->avg('rating'), 1);
             $total_products = Product::where('vendor_id', $vendorId)->count('id');
+            $total_sales = OrderItem::where('vendor_id', $vendorId)->where('item_status', 'delivered')->count();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Vendor Shop Details Retrieve Successfully',
                 'vendorData' => $vendorData,
                 'average_rating' => $average_rating,
-                'total_products' => $total_products
+                'total_products' => $total_products,
+                'total_sales' => $total_sales
             ]);
         } catch (\Exception $e) {
             require $this->sendErrorResponse(false, $e->getMessage(), 500);
