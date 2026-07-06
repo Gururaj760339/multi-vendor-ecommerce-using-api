@@ -185,3 +185,7 @@ Route::get('/admin-pending-withdraw', function(){
 Route::get('/admin-users', function(){
     return view('admin/admin_all_customer');
 });
+
+Route::get('/admin-revenue-reports', function(){
+    return view('admin/admin_show_revenue_reports');
+});

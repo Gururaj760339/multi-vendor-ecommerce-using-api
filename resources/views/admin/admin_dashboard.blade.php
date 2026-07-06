@@ -80,7 +80,7 @@
                 <a href="/admin-products"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
                     <i class="fa-solid fa-box w-5 text-center"></i>
-                        Products
+                    Products
                 </a>
             </li>
 
@@ -88,7 +88,15 @@
                 <a href="/admin-pending-withdraw"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
                     <i class="fa-solid fa-money-bill-transfer w-5 text-center"></i>
-                        Withdraw
+                    Withdraw
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin-revenue-reports"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    Revenue
                 </a>
             </li>
         </ul>

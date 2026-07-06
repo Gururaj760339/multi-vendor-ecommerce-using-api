@@ -165,7 +165,7 @@ class adminController extends BaseController
     public function topVendorReport()
     {
         try {
-            $vendor = VendorEarning::with('vendor')->orderBy('net_amount', 'desc')->limit(1)->first();
+            $vendor = VendorEarning::with('vendor')->orderBy('net_amount', 'desc')->limit(5)->get();
             return $this->sendResponse(true, 'Top Perform Vendor Report Retrieve Successfully', $vendor, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);

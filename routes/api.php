@@ -115,6 +115,6 @@ Route::post('/admin/products/status/update/{id}', [adminController::class, 'prod
 Route::get('/admin/pending/withdrawals', [adminController::class, 'AllWithdraws'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::post('/admin/withdrawals/status/update/{id}', [adminController::class, 'withdrawStatusUpdate'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/allusers', [adminController::class, 'allUsers'])->middleware(['auth:sanctum', 'can:isAdmin']);
-Route::get('/admin/revenue/reports', [adminController::class, 'adminRevenueReport'])->middleware(['auth:sanctum', 'can:isAdmin']);
+Route::post('/admin/revenue/reports', [adminController::class, 'adminRevenueReport'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/top/vendor', [adminController::class, 'topVendorReport'])->middleware(['auth:sanctum', 'can:isAdmin']);
 Route::get('/admin/top/product', [adminController::class, 'topProductReport'])->middleware(['auth:sanctum', 'can:isAdmin']);
