@@ -143,30 +143,30 @@
 
         document.getElementById('avilable-balance').innerHTML = `
            <p class="text-gray-500">Available Balance</p>
-            <h2 class="text-4xl font-bold text-green-600 mt-2">$${data.currentBalance}</h2>
+            <h2 class="text-4xl font-bold text-green-600 mt-2">$${data.currentBalance ? data.currentBalance : 0}</h2>
         `;
 
         document.getElementById('balance-summery').innerHTML = `
             <div class="flex justify-between">
                             <span>Total Earnings</span>
-                            <span>$${data.totalEarning}</span>
+                            <span>$${data.totalEarning ? data.totalEarning : 0}</span>
                         </div>
 
                         <div class="flex justify-between">
                             <span>Total Withdrawn</span>
-                            <span>$${data.totalWithdraw}</span>
+                            <span>$${data.totalWithdraw ? data.totalWithdraw : 0}</span>
                         </div>
 
                         <div class="flex justify-between">
                             <span>Pending Withdraw</span>
-                            <span>$${data.pendingWithdraw}</span>
+                            <span>$${data.pendingWithdraw ? data.pendingWithdraw : 0}</span>
                         </div>
 
                         <hr class="border-indigo-400">
 
                         <div class="flex justify-between font-bold text-lg">
                             <span>Available</span>
-                            <span>$${data.currentBalance}</span>
+                            <span>$${data.currentBalance ? data.currentBalance : 0}</span>
                         </div>
         `;
     }

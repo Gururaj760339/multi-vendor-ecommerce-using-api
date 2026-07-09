@@ -142,43 +142,43 @@
             <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-box text-indigo-600 text-3xl"></i>
                             <p class="text-gray-500 mt-3">Products</p>
-                            <h2 class="text-3xl font-bold">${data.total_products}</h2>
+                            <h2 class="text-3xl font-bold">${data.total_products ? data.total_products : 0}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-cart-shopping text-green-600 text-3xl"></i>
                             <p class="text-gray-500 mt-3">Orders</p>
-                            <h2 class="text-3xl font-bold">${data.total_order}</h2>
+                            <h2 class="text-3xl font-bold">${data.total_order ? data.total_order : 0}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-dollar-sign text-yellow-500 text-3xl"></i>
                             <p class="text-gray-500 mt-3">Sales</p>
-                            <h2 class="text-3xl font-bold">$${data.total_sales}</h2>
+                            <h2 class="text-3xl font-bold">$${data.total_sales ? data.total_sales : 0}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-wallet text-purple-600 text-3xl"></i>
                             <p class="text-gray-500 mt-3">Earnings</p>
-                            <h2 class="text-3xl font-bold">$${data.net_earnings}</h2>
+                            <h2 class="text-3xl font-bold">$${data.net_earnings ? data.net_earnings : 0}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-hourglass-half text-yellow-500 text-3xl"></i>                            
                             <p class="text-gray-500 mt-3">Pending Sales</p>
-                            <h2 class="text-3xl font-bold">$${data.pending_total_sales}</h2>
+                            <h2 class="text-3xl font-bold">$${data.pending_total_sales ? data.pending_total_sales : 0}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-coins text-yellow-500 text-3xl"></i>                            
                             <p class="text-gray-500 mt-3">Pending Earnings</p>
-                            <h2 class="text-3xl font-bold">$${data.pending_net_earnings}</h2>
+                            <h2 class="text-3xl font-bold">$${data.pending_net_earnings ? data.pending_net_earnings : 0}</h2>
                         </div>
 
                         <div class="bg-white p-6 rounded-xl shadow">
                             <i class="fa-solid fa-money-bill-transfer text-purple-600 text-3xl"></i>                           
                             <p class="text-gray-500 mt-3">Pending Withdraw</p>
-                            <h2 class="text-3xl font-bold">${data.pending_withdrawals}</h2>
+                            <h2 class="text-3xl font-bold">${data.pending_withdrawals ? data.pending_withdrawals : 0}</h2>
                         </div>
         `;
     }
