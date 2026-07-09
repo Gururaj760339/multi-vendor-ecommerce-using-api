@@ -37,7 +37,7 @@
         });
 
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
 
         document.getElementById('categoryForm').innerHTML = `
         <!-- Category Name -->

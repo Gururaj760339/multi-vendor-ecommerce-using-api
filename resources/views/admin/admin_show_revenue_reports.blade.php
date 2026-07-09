@@ -101,7 +101,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 font-medium">Gross Sales</p>
-                    <h2 class="text-3xl font-bold text-gray-800 mt-2">$${data.gross_sales}</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 mt-2">$${data.gross_sales ? data.gross_sales : 0}</h2>
                 </div>
 
                 <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
@@ -115,7 +115,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <p class="text-gray-500 font-medium">Commission</p>
-                    <h2 class="text-3xl font-bold text-gray-800 mt-2">$${data.commission_amount}</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 mt-2">$${data.commission_amount ? data.commission_amount : 0}</h2>
                 </div>
 
                 <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center">
