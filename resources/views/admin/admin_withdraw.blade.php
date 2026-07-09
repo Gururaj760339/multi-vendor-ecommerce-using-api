@@ -65,7 +65,7 @@
         });
 
         const data = await response.json();
-        document.getElementById('total-request').innerHTML = `Total Requests : ${data.totalPendingRequest}`;
+        document.getElementById('total-request').innerHTML = `Total Requests : ${data.totalPendingRequest ? data.totalPendingRequest : 0}`;
         
         let html = '';
         data.data.forEach(withdraw => {

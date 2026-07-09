@@ -193,3 +193,7 @@ Route::get('/admin-revenue-reports', function(){
 Route::get('/admin-top-vendor', function(){
     return view('admin/admin_top_vendor');
 });
+
+Route::get('/admin-top-products', function(){
+    return view('admin/admin_top_product');
+});

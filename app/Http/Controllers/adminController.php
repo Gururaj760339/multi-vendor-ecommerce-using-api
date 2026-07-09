@@ -181,12 +181,13 @@ class adminController extends BaseController
     public function topProductReport()
     {
         try {
-            $product = OrderItem::with('product')
+            $product = OrderItem::with('product.vendor.user', 'product.category', 'product.productImages')
                 ->selectRaw('product_id, sum(quantity) as total_quantity')
+                ->selectRaw('product_id, sum(price) as total_price')
                 ->groupBy('product_id')
                 ->orderBy('quantity', 'desc')
-                ->first();
-            return $product;
+                ->get();
+            return $this->sendResponse(true, 'Top Products Retrieve Successfully', $product, 200);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
         }

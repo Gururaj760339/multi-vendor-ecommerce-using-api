@@ -107,6 +107,14 @@
                     Top Vendor
                 </a>
             </li>
+
+            <li>
+                <a href="/admin-top-products"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-trophy w-5 text-center"></i>
+                    Top Product
+                </a>
+            </li>
         </ul>
 
         <!-- Logout -->
