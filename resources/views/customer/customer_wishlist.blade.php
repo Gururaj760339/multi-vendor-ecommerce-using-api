@@ -22,16 +22,17 @@
 
 </html>
 <script src="{{ asset('storage/js/navbar.js') }}"></script>
+<script src="{{ asset('storage/js/addtocart.js') }}"></script>
 <script>
     updateAuthUI();
     showWishlitValue();
 
-    async function showWishlistProduct(){
+    async function showWishlistProduct() {
         const response = await fetch('api/wishlist', {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer '+localStorage.getItem('token'),
-                'Accept' : 'application/json'
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'application/json'
             }
         });
 
@@ -59,7 +60,6 @@
                     <p class="text-blue-600 font-bold mt-2">${products.product.price}</p>
 
                     <div class="flex gap-2 mt-4">
-                        <button class="bg-yellow-400 px-4 py-2 rounded-lg hover:bg-yellow-500">Add Cart</button>
                         <button onclick="deleteWishlistProduct(${products.id})" class="bg-red-500 text-white px-4 py-2 rounded-lg">Remove</button>
                     </div>
                 </div>
@@ -73,11 +73,11 @@
 
     showWishlistProduct();
 
-    async function deleteWishlistProduct(id){
+    async function deleteWishlistProduct(id) {
         const response = await fetch(`api/wishlist/delete/${id}`, {
-            method : 'DELETE',
-            headers : {
-                'Authorization' : 'Bearer '+localStorage.getItem('token')
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
 

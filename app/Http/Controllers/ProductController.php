@@ -19,10 +19,12 @@ class ProductController extends BaseController
     {
         try {
             // $product = Product::where('status', 'active')->get();
-            $product = Product::with(['productImages', 'vendor.user'])
+            $product = Product::with(['productImages', 'vendor.user', 'reviews'])
             ->whereHas('productImages', function ($query) {
                 $query->where('is_primary', 1);
             })
+            ->withAvg('reviews', 'rating')
+            ->where('status', 'active')
             ->get();
 
             return $this->sendResponse(true, 'All Customer Product Retrive Successfully', $product, 200);
@@ -34,7 +36,10 @@ class ProductController extends BaseController
     public function CustomerSingleProduct($slug)
     {
         try {
-            $product = Product::with('vendor', 'category', 'productImages', 'reviews')->where('slug', $slug)->first();
+            $product = Product::with('vendor', 'category', 'productImages', 'reviews')
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->where('slug', $slug)->first();
 
             if (!$product) {
                 return $this->sendErrorResponse(false, 'Product Not found', 404);

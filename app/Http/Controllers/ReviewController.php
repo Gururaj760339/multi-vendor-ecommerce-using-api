@@ -57,7 +57,7 @@ class ReviewController extends BaseController
         try {
             $product = Product::where('slug', $slug)->firstOrFail();
             $productId = $product->id;
-            $reviews = Review::with(['product.productImages', 'user'])->where('product_id', $productId)->get();
+            $reviews = Review::with(['product.productImages', 'user'])->where('status', 'approved')->where('product_id', $productId)->get();
 
             if($reviews->isEmpty()){
                 return $this->sendErrorResponse(false, 'No Review Found it', 500);

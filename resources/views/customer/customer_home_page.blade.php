@@ -21,94 +21,12 @@
         </div>
     </section>
 
-    <!-- PRODUCTS -->
-    <section class="max-w-7xl mx-auto p-6">
-
-        <div class="flex gap-3 mt-3 md:mt-0">
-
-            <input type="text" placeholder="Search product..."
-                class="border px-4 py-2 rounded-lg w-60 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-            <select class="border px-4 py-2 rounded-lg">
-                <option>All Categories</option>
-                <option>Electronics</option>
-                <option>Fashion</option>
-                <option>Home</option>
-            </select>
-
-        </div>
-
-        <h2 class="text-2xl font-bold mt-4 mb-6">🔥 Trending Products</h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-
-            <!-- PRODUCT CARD -->
-            <div class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden relative group">
-
-                <!-- Product Image -->
-                <div class="h-40 bg-gray-200 relative flex items-center justify-center">
-
-                    <!-- Wishlist -->
-                    <button
-                        class="absolute top-3 right-3 bg-white w-10 h-10 rounded-full shadow 
-                   flex items-center justify-center text-gray-500 
-                   hover:text-red-600 hover:bg-red-50 transition">
-
-                        ♡
-                    </button>
-
-                    <img src="" class="h-full object-cover">
-
-                </div>
-
-
-                <div class="p-4">
-
-                    <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                        Vendor: Tech Store
-                    </span>
-
-                    <h3 class="font-semibold mt-2">
-                        Bluetooth Speaker
-                    </h3>
-
-
-                    <div class="flex justify-between items-center mt-2">
-
-                        <p class="text-blue-600 font-bold">
-                            $30
-                        </p>
-
-                        <span class="text-yellow-500 text-sm">
-                            ⭐ 4.6
-                        </span>
-
-                    </div>
-
-
-                    <button
-                        class="w-full mt-3 bg-yellow-400 text-black py-2 rounded-lg 
-                       hover:bg-yellow-500 font-semibold">
-                        Add to Cart
-                    </button>
-
-
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
     <!-- ALL PRODUCTS SECTION -->
     <section class="max-w-7xl mx-auto p-6 mt-10">
 
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
 
             <h2 class="text-2xl font-bold">🛒 All Products</h2>
-
-            <!-- SEARCH + FILTER -->
-
 
         </div>
 
@@ -145,7 +63,7 @@
         });
 
         const data = await response.json();
-        console.log(data.data);
+        //console.log(data.data);
         let html = '';
 
         data.data.forEach(products => {
@@ -193,7 +111,7 @@
                         </p>
 
                         <span class="text-yellow-500 text-sm">
-                            ⭐ 4.6 static acha
+                            ⭐ ${products.reviews_avg_rating ? Number(products.reviews_avg_rating).toFixed(2) : 0}
                         </span>
 
                     </div>

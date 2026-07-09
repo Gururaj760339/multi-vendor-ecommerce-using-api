@@ -42,12 +42,30 @@ class CartController extends CuponController
             'quantity' => 'required'
         ]);
 
+        $userId = Auth::user()->id;
+
+        $exists = Cart::where('product_id', $request->product_id)
+        ->where('user_id', $userId)
+        ->exists();
+
+        $existsCartQuantity = Cart::where('user_id', $userId)->value('quantity');
+
         try {
-            $cart = Cart::create([
-                'user_id' => Auth::user()->id,
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity
-            ]);
+
+            if ($exists) {
+                $cart = Cart::where('user_id', $userId)
+                ->where('product_id', $request->product_id)
+                ->update([
+                    'quantity' => $request->quantity + $existsCartQuantity,
+                ]);
+            } else {
+                $cart = Cart::create([
+                    'user_id' => $userId,
+                    'product_id' => $request->product_id,
+                    'quantity' => $request->quantity
+                ]);
+            }
+
 
             return $this->sendResponse(true, 'Cart Add Successfully', $cart, 200);
         } catch (\Exception $e) {

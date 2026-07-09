@@ -71,7 +71,12 @@
         });
 
         const data = await response.json();
-        //console.log(data.data.id);
+        //console.log(data.data);
+
+        let stars = '';
+        for(let i = 1; i <= parseInt(data.data.reviews_avg_rating); i++){
+            stars += '★';
+        }
 
         document.getElementById('productMain').innerHTML = `
             <section class="max-w-7xl mx-auto p-8">
@@ -101,8 +106,8 @@
                 <h1 class="text-4xl font-bold">${data.data.name}</h1>
 
                 <div class="flex mt-4">
-                    <span class="text-yellow-400 text-xl">★★★★★</span>
-                    <span class="ml-3 text-gray-500">(120 Reviews) now it is satic</span>
+                    <span class="text-yellow-400 text-xl">${stars}</span>
+                    <span class="ml-3 text-gray-500">(${data.data.reviews_count} Reviews)</span>
                 </div>
 
                 <h2 class="text-3xl font-bold text-blue-600 mt-5">$${data.data.price}</h2>
@@ -201,6 +206,7 @@
 
         let html = '';
 
+        if(data.success){
         data.data.forEach(reviews => {
             let createdAt = new Date(reviews.created_at);
             let formattedDate = createdAt.getDate() + '-' + createdAt.getMonth() + '-' + createdAt
@@ -215,7 +221,7 @@
                                             <img src="/storage/${images.image_path}" class="w-14 h-14 rounded-lg object-cover">
                                         `;
                                     }
-                                })}
+                                }).join('')}
 
                                 <div>
                                     <h3 class="font-semibold">${reviews.product.name}</h3>
@@ -254,6 +260,7 @@
         document.getElementById('review-details').innerHTML = html;
 
         showDeleteReviewButton(slug, data.data);
+        }
     }
 
     showReviews();

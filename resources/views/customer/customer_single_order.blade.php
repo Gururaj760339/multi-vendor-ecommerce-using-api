@@ -49,7 +49,8 @@
         const data = await response.json();
         console.log(data);
 
-        let createdAt = new Date(data.data[0].order_items[0].created_at);
+        let createdAt = new Date(data.data[0].created_at);
+        console.log(createdAt);
 
         let date = createdAt.getDate();
         let months = createdAt.toLocaleString('default', {
@@ -84,7 +85,7 @@
                                 <img src="/storage/${image.image_path}" class="w-20 h-20 rounded object-cover">
                             `;
                             }                     
-                        })}
+                        }).join('')}
                         
                         <div>
                             <h3 class="font-semibold">${item.product.name}</h3>

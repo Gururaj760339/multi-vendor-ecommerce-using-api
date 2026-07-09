@@ -78,8 +78,8 @@
                                 </div>
                             </td>
 
-                            <td class="px-6 py-5">${vendor.order_items_count}</td>
-                            <td class="px-6 py-5 font-bold text-green-600">$${vendor.vendor_earning_sum_net_amount}</td>
+                            <td class="px-6 py-5">${vendor.order_items_count ? vendor.order_items_count : 0}</td>
+                            <td class="px-6 py-5 font-bold text-green-600">$${vendor.vendor_earning_sum_net_amount ? vendor.vendor_earning_sum_net_amount : 0}</td>
                         </tr>
             `;
         });
