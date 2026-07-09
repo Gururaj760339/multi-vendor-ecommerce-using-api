@@ -77,17 +77,7 @@
                     </p>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <div class="text-right">
-                        <h3 class="font-bold">Rahim Store</h3>
-                        <p class="text-sm text-gray-500">Vendor</p>
-                    </div>
-                    <img src="https://i.pravatar.cc/150" class="w-12 h-12 rounded-full border">
-
-                    <button onclick="logOut()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Logout
-                    </button>
+                <div id="vendor-nav-details" class="flex items-center gap-4">
                 </div>
             </header>
 
@@ -180,6 +170,19 @@
                             <p class="text-gray-500 mt-3">Pending Withdraw</p>
                             <h2 class="text-3xl font-bold">${data.pending_withdrawals ? data.pending_withdrawals : 0}</h2>
                         </div>
+        `;
+
+        document.getElementById('vendor-nav-details').innerHTML = `
+                <div class="text-right">
+                        <h3 class="font-bold">${data.vendor.name}</h3>
+                        <p class="text-sm text-gray-500">Vendor</p>
+                    </div>
+                    <img src="/storage/${data.vendor.avatar}" class="w-12 h-12 rounded-full border">
+
+                    <button onclick="logOut()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
         `;
     }
 

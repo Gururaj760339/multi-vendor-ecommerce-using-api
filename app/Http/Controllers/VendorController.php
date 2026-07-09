@@ -110,6 +110,8 @@ class VendorController extends BaseController
             $total_products = Product::where('vendor_id', $vendorId)->count('id');
             $total_earning = VendorEarning::where('vendor_id', $vendorId)->where('status', 'available')->sum('net_amount');
 
+            $vendor = User::where('id', Auth::user()->id)->first();
+
 
             return response()->json([
                 'success' => true,
@@ -120,7 +122,8 @@ class VendorController extends BaseController
                 'pending_net_earnings' => $pending_net_earnings,
                 'total_order' => $total_order,
                 'pending_withdrawals' => $pending_withdrawals,
-                'total_products' => $total_products
+                'total_products' => $total_products,
+                'vendor' => $vendor
             ]);
         } catch (\Exception $e) {
             return $this->sendErrorResponse(false, $e->getMessage(), 500);
